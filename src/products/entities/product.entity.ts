@@ -46,7 +46,11 @@ export class Product {
   })
   tags: string[];
 
-  // images
+  @Column('text', {
+    array: true,
+    default: [],
+  })
+  images: string[];
 
   @BeforeInsert()
   checkSlugInsert() {
