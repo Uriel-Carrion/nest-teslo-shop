@@ -1,7 +1,8 @@
-import { BeforeInsert, BeforeUpdate, Column } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, OneToMany } from 'typeorm';
 import { Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ProductImage } from './';
 
-@Entity()
+@Entity({ name: 'products' })
 export class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -46,11 +47,12 @@ export class Product {
   })
   tags: string[];
 
-  @Column('text', {
-    array: true,
-    default: [],
+  // images
+  @OneToMany(() => ProductImage, (productImage) => productImage.product, {
+    cascade: true,
+    eager: true,
   })
-  images: string[];
+  images?: ProductImage[];
 
   @BeforeInsert()
   checkSlugInsert() {
